@@ -6,7 +6,7 @@
   "types": "dist/src/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "start": "npm run build && node ./dist/src/index.js",
+    "start": "ts-node src/index.ts",
     "prepare": "npm run build",
     "test": "mocha --require ts-node/register test/**/*.ts"
   },

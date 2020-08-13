@@ -146,11 +146,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
   console.log(result.description);
   console.log(result.title);
   for(const a of result.versions) {
-    console.log(a.version);
-    console.log(a.title);
-    console.log(a.date);
-    console.log(a.body);
-    console.log(a.parsed);
+    console.log('version:', a.version);
+    console.log('title:', a.title);
+    console.log('date:', a.date);
+    console.log('body:', JSON.stringify(a.body));
+    console.log('parsed:', a.parsed);
   }
 })();
 
