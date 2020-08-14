@@ -50,19 +50,26 @@ const octokit = new Octokit({
 
   const parsedChangelog = await parseChangelog({text: changelog});
   for(const {version, body} of parsedChangelog.versions) {
-    const release = releases.find(r => r.tag_name === `v${version}`);
+    if (version === null) continue;
+    const tagName = `v${version}`;
+    const release = releases.find(r => r.tag_name === tagName);
 
     if(release === undefined) {
-      console.error(`version: ${version} is not found`);
-      continue;
+      await octokit.repos.createRelease({
+        owner,
+        repo,
+        body,
+        tag_name: tagName
+      });
+      console.log(`CHANGELOG for version ${version} was created!`);
+    } else {
+      await octokit.repos.updateRelease({
+        owner,
+        repo,
+        release_id: release.id,
+        body,
+      });
+      console.log(`CHANGELOG for version ${version} was updated!`);
     }
-
-    await octokit.repos.updateRelease({
-      owner,
-      repo,
-      release_id: release.id,
-      body,
-    });
-    console.log(`CHANGELOG for version ${version} is updated!`);
   }
-})();
+})().catch(console.error);
