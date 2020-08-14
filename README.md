@@ -11,6 +11,7 @@ Use the commands as follows to update releases on `nwtgck/actions-netlify` repos
 git clone https://github.com/nwtgck/changelog-to-gh-release.git
 cd changelog-to-gh-release
 npm ci
+export GITHUB_TOKEN="your github token here"
 npm start -- --owner=nwtgck --repo=actions-netlify
 ```
 
