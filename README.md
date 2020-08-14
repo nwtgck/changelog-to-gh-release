@@ -1,4 +1,6 @@
 # changelog-to-gh-release
+![Node CI](https://github.com/nwtgck/changelog-to-gh-release/workflows/Node%20CI/badge.svg)
+
 Fill GitHub Releases with your CHANGELOG.md
 
 ## Usage
