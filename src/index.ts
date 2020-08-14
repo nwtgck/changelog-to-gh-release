@@ -1,16 +1,28 @@
 import parseChangelog from 'changelog-parser';
 import { Octokit } from '@octokit/rest';
+import * as yargs from "yargs";
 
-export function hoge(str: string): number {
-  return str.length;
-}
+// Create option parser
+const args = yargs
+  .option("owner", {
+    describe: "owner",
+    type: "string",
+    demandOption: true,
+  })
+  .option("repo", {
+    describe: "repository name",
+    type: "string",
+    demandOption: true,
+  })
+  .option("github-changelog-path", {
+    describe: "CHANGELOG.md path in GitHub repository",
+    default: 'CHANGELOG.md'
+  })
+  .argv;
 
-// TODO: hard code
-const owner = 'nwtgck';
-// TODO: hard code
-const repo = 'actions-netlify';
-// TODO: hard code
-const changelogPath = 'CHANGELOG.md';
+const owner = args.owner;
+const repo = args.repo;
+const changelogPath = args["github-changelog-path"];
 
 const githubToken: string | undefined = process.env["GITHUB_TOKEN"];
 if(githubToken === undefined) {

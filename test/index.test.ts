@@ -1,10 +1,9 @@
 // TODO: You should change this content.
 
-import {hoge}  from '../src';
 import * as assert from 'power-assert';
 
-describe('hoge', () => {
-  it('should return the same value as string length', () => {
-    assert.strictEqual(hoge("hello"), 5);
+describe('test', () => {
+  it('1 should be 1', () => {
+    assert.strictEqual(1, 1);
   });
 });
