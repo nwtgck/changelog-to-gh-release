@@ -1,5 +1,5 @@
 import parseChangelog from 'changelog-parser';
-import { Octokit } from '@octokit/rest';
+import { Octokit, RestEndpointMethodTypes } from '@octokit/rest';
 import * as yargs from "yargs";
 
 // Create option parser
@@ -33,6 +33,21 @@ const octokit = new Octokit({
   auth: githubToken,
 });
 
+async function listAllReleases({octokit, owner, repo}: {octokit: Octokit, owner: string, repo: string}): Promise<RestEndpointMethodTypes["repos"]["listReleases"]["response"]["data"]> {
+  const result = [];
+  for(let page = 1; ; page++) {
+    const res = await octokit.repos.listReleases({
+      owner,
+      repo,
+      per_page: 100,
+      page,
+    });
+    if (res.data.length === 0) break;
+    result.push(...res.data);
+  }
+  return result;
+}
+
 (async () => {
   const contentResponse = await octokit.repos.getContent({
     owner,
@@ -42,11 +57,7 @@ const octokit = new Octokit({
   const changelogBase64: string = contentResponse.data.content;
   const changelog = Buffer.from(changelogBase64, 'base64').toString();
 
-  const releasesResponse = await octokit.repos.listReleases({
-    owner,
-    repo,
-  });
-  const releases = releasesResponse.data;
+  const releases = await listAllReleases({octokit, owner, repo});
 
   const parsedChangelog = await parseChangelog({text: changelog});
   for(const {version, body} of parsedChangelog.versions) {
